@@ -6,7 +6,7 @@ TODO
 - [ ] Keccak256 + Keccak512
 - [x] Make cache
 - [x] Agg. data (FNV hash)
-- [ ] Dataset calculation
+- [x] Dataset calculation
 - [ ] Hashimoto loop
 - [ ] PoW setup
 
