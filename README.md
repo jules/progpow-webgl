@@ -4,7 +4,7 @@ This repo will contain a ProgPOW implementation in WebGL2. The rationale for cho
 
 TODO
 - [ ] Keccak256 + Keccak512
-- [ ] Make cache (1GB)
+- [x] Make cache
 - [x] Agg. data (FNV hash)
 - [ ] Dataset calculation
 - [ ] Hashimoto loop
