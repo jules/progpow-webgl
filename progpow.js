@@ -2,6 +2,8 @@ const FNV_PRIME = 16777619;
 const CACHE_SIZE = 1000;
 const CACHE_ROUNDS = 3;
 const KECCAK_512_SIZE = 64;
+const WORD_BYTES = 4;
+const DATA_SET_PARENTS = 256;
 
 var gl;
 
@@ -10,28 +12,51 @@ function fnv_hash(v1, v2) {
 }
 
 function make_cache(seed) {
-	let n = CACHE_SIZE / KECCAK_512_SIZE;
+	let n = Math.floor(CACHE_SIZE / KECCAK_512_SIZE);
 
 	// Produce initial data set
-	let data_set = [];
-	data_set.push(keccak_512(seed));
+	let cache = [];
+	cache.push(keccak_512(seed));
 	for (let i = 1; i < n; i++) {
-		data_set.push(keccak_512(data_set[i-1]));
+		cache.push(keccak_512(cache[i-1]));
 	}
 
 	// randmemohash
 	for (let i = 0; i < CACHE_ROUNDS; i++) {
 		for (let j = 0; j < n; j++) {
-			let value = data_set[j][0] % n;
-			data_set[j] = keccak_512(data_set[(i-1+value) % value] ^ data_set[value]);
+			let value = cache[j][0] % n;
+			cache[j] = keccak_512(cache[(i-1+value) % value] ^ cache[value]);
 		}
 	}
 
-	return data_set;
+	return cache;
 }
 
-function calculate_data_set_item(data_set, i) {
+function calculate_data_set_item(cache, i) {
+	let n = cache.length();
+	let r = Math.floor(KECCAK_512_SIZE / WORD_BYTES);
 	
+	// TODO: This needs to be a copy, not a ref
+	let mix = cache[i % n];
+	mix[0] ^= i;
+	mix = keccak_512(mix);
+
+	for (let j = 0; j < DATA_SET_PARENTS; j++) {
+		let cache_index = fnv(i ^ j, mix[j % r]);
+		mix.map(b => fnv(b, cache[cache_index % n]);
+	}
+
+	return keccak_512(mix);
+}
+
+function calculate_data_set(cache) {
+	let data_set = [];
+	let n = Math.floor(CACHE_SIZE / KECCAK_512_SIZE);
+	for (let i = 0; i < n; i++) {
+		data_set.push(calculate_data_set_item(cache, i);
+	}
+
+	return data_set;
 }
 
 function init(threads) {
