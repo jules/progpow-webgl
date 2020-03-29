@@ -30,23 +30,27 @@ function make_cache(seed) {
 	return data_set;
 }
 
+function calculate_data_set_item(data_set, i) {
+	
+}
+
 function init(threads) {
 	canvas = document.createElement('canvas');
-    canvas.height = 1;
-    canvas.width = threads;
-
+	canvas.height = 1;
+	canvas.width = threads;
+	
 	// Try for both WebGL2 contexts.
-    var names = [ "webgl2", "experimental-webgl2" ];
-    for (var i=0; i<names.length; i++) {
-        gl = canvas.getContext(names[i]);
-        if (gl) { break; }
-    }
-
-    if(!gl) {
-        console.log("Could not initialize WebGL2 context");
+	var names = [ "webgl2", "experimental-webgl2" ];
+	for (var i=0; i<names.length; i++) {
+		gl = canvas.getContext(names[i]);
+		if (gl) { break; }
+	}
+	
+	if(!gl) {
+		console.log("Could not initialize WebGL2 context");
 		return;
-    }
-
+	}
+	
 	var program = gl.createProgram();
 	
 	// Shader stuff goes here
