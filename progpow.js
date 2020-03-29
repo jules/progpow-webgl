@@ -1,7 +1,7 @@
 const FNV_PRIME = 16777619;
 const CACHE_SIZE = 1000;
 const CACHE_ROUNDS = 3;
-const KECCAK_256_SIZE = 64;
+const KECCAK_512_SIZE = 64;
 
 var gl;
 
@@ -10,7 +10,7 @@ function fnv_hash(v1, v2) {
 }
 
 function make_cache(seed) {
-	let n = CACHE_SIZE / KECCAK_256_SIZE;
+	let n = CACHE_SIZE / KECCAK_512_SIZE;
 
 	// Produce initial data set
 	let data_set = [];
