@@ -65,10 +65,12 @@ function init(threads) {
 	canvas.width = threads;
 	
 	// Try for both WebGL2 contexts.
-	var names = [ "webgl2", "experimental-webgl2" ];
-	for (var i=0; i<names.length; i++) {
+	let names = [ "webgl2", "experimental-webgl2" ];
+	for (let i=0; i<names.length; i++) {
 		gl = canvas.getContext(names[i]);
-		if (gl) { break; }
+		if (gl) { 
+			break; 
+		}
 	}
 	
 	if(!gl) {
@@ -76,7 +78,58 @@ function init(threads) {
 		return;
 	}
 	
-	var program = gl.createProgram();
-	
-	// Shader stuff goes here
+	let program = gl.createProgram();
+
+	let vertex_shader = create_shader(gl, gl.VERTEX_SHADER, vs_shader);
+	let fragment_shader = create_shader(gl, gl.FRAGMENT_SHADER, fs_shader);
+
+	gl.attachShader(program, vertex_shader);
+	gl.attachShader(program, fragment_shader);
+	gl.linkProgram(program);
+	if !(gl.getProgramParameter(program, gl.LINK_STATUS)) {
+		console.log("oops");
+		return;
+	}
 }
+
+function create_shader(gl, type, source) {
+	var shader = gl.createShader(type);
+	gl.shaderSource(shader, source);
+	gl.compileShader(shader);
+	var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+	if (success) {
+		return shader;
+	}
+ 
+	console.log(gl.getShaderInfoLog(shader));
+	gl.deleteShader(shader);
+}
+
+/////////////// SHADER SOURCES ///////////////////
+
+let vs_shader = `#version 300 es
+
+void main() {
+
+}
+`;
+
+let fs_shader = `#version 300 es
+
+uniform uint fnv_prime;
+uniform uint cache_len;
+uniform uint full_size;
+uniform uint word_bytes;
+uniform uint hash_bytes;
+uniform uint mix_bytes;
+
+uint fnv_hash(uint v1, uint v2) {
+	return ((v1 * fnv_prime) ^ v2);
+}
+
+void main() {
+	uint n = full_size / hash_bytes;
+	
+
+}
+`;
