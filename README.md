@@ -1,6 +1,6 @@
-## ProgPOW implementation in WebGL2
+## ProgPOW implementation in WebGL
 
-This repo will contain a ProgPOW implementation in WebGL2. The rationale for choosing WebGL2 is simple - support has nearly come to all major browsers (with the exceptions WebKit based, but their implementation [is underway](https://webkit.org/status/#specification-webgl-2)), it offers performance improvements and more efficient use of the GPU in order to achieve a higher hashrate, and supports integer-based shaders, which makes the maths involved more reliable.
+This repo will contain a ProgPOW implementation in WebGL.
 
 TODO
 - [ ] Keccak256 + Keccak512
